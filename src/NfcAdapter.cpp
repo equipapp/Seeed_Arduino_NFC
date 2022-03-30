@@ -41,6 +41,21 @@ void NfcAdapter::begin(boolean verbose)
     shield->SAMConfig();
 }
 
+bool NfcAdapter::nfcModuleDetected()
+{
+    uint32_t versiondata = shield->getFirmwareVersion();
+
+    if (!versiondata)
+    {
+#ifdef NDEF_USE_SERIAL
+        SERIAL.print(F("Failed to detect the nfc module"));
+        SERIAL.println();
+#endif
+        return false;
+    }
+    return true;
+}
+
 boolean NfcAdapter::tagPresent(unsigned long timeout)
 {
     uint8_t success;
